@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommended Apps | Guitarists Collaboration</title>
+    <meta name="description" content="Explore recommended practice companion apps for guitarists. Featuring interactive fretboard soloing, multi-track studio mixing, and drum radar visualizers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0c0f14;
+            --surface: #131720;
+            --surface-card: #181d28;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(0, 245, 212, 0.35);
+            --teal: #00f5d4;
+            --laser-blue: #33b5ff;
+            --text-primary: #eceff2;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --phone-bezel: #161a23;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navbar */
+        .navbar {
+            border-bottom: 1px solid var(--border);
+            padding: 18px 0;
+            background: rgba(12, 15, 20, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            display: inline-flex;
+            align-items: baseline;
+        }
+
+        .logo span {
+            color: var(--teal);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.15s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--teal);
+        }
+
+        /* Header */
+        .page-header {
+            padding: 50px 0 30px;
+            text-align: center;
+        }
+
+        .page-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--teal);
+            background: rgba(0, 245, 212, 0.1);
+            border: 1px solid rgba(0, 245, 212, 0.25);
+            padding: 5px 14px;
+            border-radius: 999px;
+            margin-bottom: 16px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        /* ─── FEATURE SPOTLIGHT SHOWCASE CARD ─── */
+        .showcase-section {
+            margin-top: 20px;
+            margin-bottom: 60px;
+        }
+
+        .showcase-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 44px 36px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .showcase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--teal), var(--laser-blue));
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        @media (max-width: 860px) {
+            .showcase-grid {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+            .showcase-card {
+                padding: 32px 20px;
+            }
+        }
+
+        /* Phone Frame */
+        .phone-mockup-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .phone-frame {
+            position: relative;
+            width: 300px;
+            height: 618px;
+            background: var(--phone-bezel);
+            border-radius: 46px;
+            box-shadow: 
+                0 25px 60px rgba(0, 0, 0, 0.8),
+                0 0 0 3px #262c38,
+                0 0 0 6px #11141c,
+                0 0 30px rgba(0, 245, 212, 0.12);
+            padding: 10px;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        .dynamic-island {
+            position: absolute;
+            top: 17px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 22px;
+            background: #000000;
+            border-radius: 20px;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        .phone-gloss {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 42px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 45%, transparent 60%);
+            pointer-events: none;
+            z-index: 9;
+        }
+
+        .carousel-viewport {
+            width: 100%;
+            height: 100%;
+            border-radius: 36px;
+            overflow: hidden;
+            background: #000000;
+            position: relative;
+            touch-action: pan-y pinch-zoom;
+            cursor: grab;
+        }
+
+        .carousel-viewport:active {
+            cursor: grabbing;
+        }
+
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+        }
+
+        .carousel-slide {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(19, 23, 32, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 15;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        .carousel-btn:hover {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: #0c0f14;
+            transform: translateY(-50%) scale(1.08);
+            box-shadow: 0 0 20px rgba(0, 245, 212, 0.5);
+        }
+
+        .carousel-btn.prev {
+            left: -20px;
+        }
+
+        .carousel-btn.next {
+            right: -20px;
+        }
+
+        @media (max-width: 480px) {
+            .carousel-btn.prev { left: -8px; }
+            .carousel-btn.next { right: -8px; }
+            .phone-frame {
+                width: 270px;
+                height: 556px;
+            }
+        }
+
+        .carousel-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            padding: 0;
+        }
+
+        .dot.active {
+            width: 26px;
+            background: var(--teal);
+            box-shadow: 0 0 12px rgba(0, 245, 212, 0.6);
+        }
+
+        /* Slide details panel */
+        .showcase-info {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            text-align: left;
+        }
+
+        .slide-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--teal);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: rgba(0, 245, 212, 0.1);
+            border: 1px solid rgba(0, 245, 212, 0.25);
+            padding: 5px 12px;
+            border-radius: 8px;
+            width: fit-content;
+            margin-bottom: 8px;
+        }
+
+        .slide-title {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            min-height: 58px;
+        }
+
+        .slide-desc {
+            font-size: 15px;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            min-height: 66px;
+        }
+
+        .feature-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .feature-pill {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            padding: 7px 13px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .download-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .store-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        @media (max-width: 580px) {
+            .store-buttons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .store-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 18px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: #ffffff;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #000000;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .store-btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.6);
+        }
+
+        .store-btn.android-btn:hover {
+            border-color: var(--teal);
+            box-shadow: 0 8px 24px rgba(0, 245, 212, 0.25);
+        }
+
+        .store-btn.ios-btn:hover {
+            border-color: var(--laser-blue);
+            box-shadow: 0 8px 24px rgba(51, 181, 255, 0.25);
+        }
+
+        .store-icon {
+            width: 26px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .store-text {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            line-height: 1.15;
+        }
+
+        .store-sub {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .store-main {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* ─── APP CATALOG GRID ─── */
+        .catalog-section {
+            margin-bottom: 70px;
+        }
+
+        .section-heading {
+            margin-bottom: 28px;
+        }
+
+        .section-heading h2 {
+            font-size: 1.75rem;
+            margin-bottom: 6px;
+        }
+
+        .section-heading p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .app-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: border-color 0.2s;
+        }
+
+        .app-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .app-card-top {
+            margin-bottom: 20px;
+        }
+
+        .app-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--laser-blue);
+            background: rgba(51, 181, 255, 0.1);
+            border: 1px solid rgba(51, 181, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .app-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .app-card p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            margin-bottom: 16px;
+        }
+
+        .app-feature-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .app-feature-list li {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .app-feature-list li::before {
+            content: '✓';
+            color: var(--teal);
+            font-weight: bold;
+        }
+
+        .btn-card {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            width: fit-content;
+        }
+
+        .btn-card:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+            background: rgba(0, 245, 212, 0.05);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .footer-links a:hover {
+            color: var(--teal);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <a href="index.html" class="logo">
+                Guitarists<span>Collaboration</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="chord-identifier.html">Chord Finder</a></li>
+                <li><a href="recommended-apps.html" class="active">Recommended Apps</a></li>
+                <li><a href="privacy.html">Privacy</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <div class="page-badge mono">Curated Tools & Mobile Companions</div>
+            <h1>Recommended Apps</h1>
+            <p>
+                Engineered for serious guitarists and practice routines. Explore high-performance backing engines, interactive fretboard theory, real-time drum radar scopes, and offline sound synthesis.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Feature Spotlight Carousel -->
+        <section class="showcase-section">
+            <div class="showcase-card">
+                <div class="showcase-grid">
+                    
+                    <!-- Left Column: Smartphone Carousel -->
+                    <div class="phone-mockup-wrapper">
+                        <div class="phone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="phone-gloss"></div>
+                            
+                            <div class="carousel-viewport" id="carouselViewport">
+                                <div class="carousel-track" id="carouselTrack">
+                                    <!-- Slide 1: Fretboard -->
+                                    <div class="carousel-slide">
+                                        <img src="screenshots/thumb-fretboard-play.png" alt="Interactive Fretboard Trainer">
+                                    </div>
+                                    <!-- Slide 2: Track Editor -->
+                                    <div class="carousel-slide">
+                                        <img src="screenshots/thumb-track-editor.png" alt="Track and Chord Progression Editor">
+                                    </div>
+                                    <!-- Slide 3: Channel Mixer -->
+                                    <div class="carousel-slide">
+                                        <img src="screenshots/thumb-channel-mixer.png" alt="Multi-Track Studio Channel Mixer">
+                                    </div>
+                                    <!-- Slide 4: Drum Radar -->
+                                    <div class="carousel-slide">
+                                        <img src="screenshots/thumb-drum-radar.png" alt="Real-Time Drum Radar Visualizer">
+                                    </div>
+                                    <!-- Slide 5: Instruments Engine -->
+                                    <div class="carousel-slide">
+                                        <img src="screenshots/thumb-instruments-engine.png" alt="Backing Instruments and Rhythm Engine">
+                                    </div>
+                                    <!-- Slide 6: Studio Library & Sharing -->
+                                    <div class="carousel-slide">
+                                        <img src="screenshots/thumb-studio-drawer.png" alt="Library and Instant Track Sharing">
+                                    </div>
+                                    <!-- Slide 7: Light Mode Theme -->
+                                    <div class="carousel-slide">
+                                        <img src="screenshots/thumb-mixer-light.png" alt="Clean Daylight and Dark Studio Themes">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Prev / Next Navigation Controls -->
+                            <button class="carousel-btn prev" id="prevBtn" aria-label="Previous Slide">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            </button>
+                            <button class="carousel-btn next" id="nextBtn" aria-label="Next Slide">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+
+                        <!-- Slide Navigation Dots -->
+                        <div class="carousel-dots" id="carouselDots">
+                            <button class="dot active" data-index="0" aria-label="Slide 1"></button>
+                            <button class="dot" data-index="1" aria-label="Slide 2"></button>
+                            <button class="dot" data-index="2" aria-label="Slide 3"></button>
+                            <button class="dot" data-index="3" aria-label="Slide 4"></button>
+                            <button class="dot" data-index="4" aria-label="Slide 5"></button>
+                            <button class="dot" data-index="5" aria-label="Slide 6"></button>
+                            <button class="dot" data-index="6" aria-label="Slide 7"></button>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Dynamic Slide Information & Download CTA -->
+                    <div class="showcase-info">
+                        <div>
+                            <div class="slide-tag" id="slideTag">Feature Spotlight 01</div>
+                            <h2 class="slide-title" id="slideTitle">Interactive Animated Fretboard</h2>
+                            <p class="slide-desc" id="slideDesc">
+                                Master lead guitar with real-time chord progressions, scale intervals, CAGED boxes, and dynamic highlights that illuminate every note as the track plays.
+                            </p>
+                        </div>
+
+                        <div class="feature-pills" id="slidePills">
+                            <span class="feature-pill">🎼 Real-Time Intervals</span>
+                            <span class="feature-pill">🎸 Pentatonic & 3NPS Boxes</span>
+                            <span class="feature-pill">⚡ Dynamic Note Highlights</span>
+                        </div>
+
+                        <!-- Download Actions -->
+                        <div class="download-actions">
+                            <div class="store-buttons-grid">
+                                <!-- Google Play Store (Guitar Studio) -->
+                                <a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" class="store-btn android-btn" target="_blank" rel="noopener">
+                                    <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.082 12 8.082c-1.8533 0-3.5902.329-5.1368.8677L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+                                    <div class="store-text">
+                                        <span class="store-sub">Get Guitar Studio on</span>
+                                        <span class="store-main">Google Play</span>
+                                    </div>
+                                </a>
+
+                                <!-- Apple App Store (Guitar Solo) -->
+                                <a href="https://apps.apple.com/app/id6801060836" class="store-btn ios-btn" target="_blank" rel="noopener">
+                                    <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-1.06 1.72-.93 2.74 1.01.08 2.02-.49 2.64-1.24z"/></svg>
+                                    <div class="store-text">
+                                        <span class="store-sub">Get Guitar Solo on</span>
+                                        <span class="store-main">App Store</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Catalog Overview -->
+        <section class="catalog-section">
+            <div class="section-heading">
+                <h2>Explore the Apps</h2>
+                <p>Designed for zero friction: no mandatory accounts, no telemetry tracking, and complete offline capability.</p>
+            </div>
+
+            <div class="apps-grid">
+                <!-- Guitar Studio -->
+                <div class="app-card">
+                    <div class="app-card-top">
+                        <span class="app-badge mono">Flagship DAW & Practice</span>
+                        <h3>Guitar Studio</h3>
+                        <p>
+                            A full-featured multi-track practice and sequencing workstation. Build custom chord progressions with dual rhythm layers, real-time reverb and chorus, and an industrial drum radar scope.
+                        </p>
+                        <ul class="app-feature-list">
+                            <li>24-fret illuminated scale & interval overlays</li>
+                            <li>FluidSynth SoundFont engine with low latency</li>
+                            <li>Dual rhythm pattern layering per measure</li>
+                            <li>Industrial 16-tap drum radar visualizer</li>
+                            <li>1-tap URL and QR code track sharing</li>
+                            <li>Zero tracking & private local storage</li>
+                        </ul>
+                    </div>
+                    <a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" class="btn-card" target="_blank" rel="noopener">
+                        Get Guitar Studio on Google Play &rarr;
+                    </a>
+                </div>
+
+                <!-- Guitar Solo -->
+                <div class="app-card">
+                    <div class="app-card-top">
+                        <span class="app-badge mono">Lead Soloing Trainer</span>
+                        <h3>Guitar Solo</h3>
+                        <p>
+                            Focused lead guitar trainer for mastering scales, modes, and arpeggios over dynamic rhythm tracks. Perfect for learning fretboard geometry, CAGED positions, and speed building.
+                        </p>
+                        <ul class="app-feature-list">
+                            <li>Real-time interval degree tracking</li>
+                            <li>Pentatonic, 3NPS, and modal box highlighting</li>
+                            <li>Interactive chord progression looper</li>
+                            <li>High-contrast daylight & dark OLED themes</li>
+                            <li>Available on both iOS and Android</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <a href="https://apps.apple.com/app/id6801060836" class="btn-card" target="_blank" rel="noopener">
+                            iOS App Store &rarr;
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=guitar.solo" class="btn-card" target="_blank" rel="noopener">
+                            Google Play &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-inner">
+            <p>&copy; 2026 Guitarists Collaboration. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="chord-identifier.html">Chord Finder</a></li>
+                <li><a href="recommended-apps.html">Recommended Apps</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="mailto:guitarly.app@gmail.com">Contact</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Carousel Script -->
+    <script>
+        const slideData = [
+            {
+                tag: "Feature Spotlight 01",
+                title: "Interactive Animated Fretboard",
+                desc: "Master lead guitar with real-time chord progressions, scale intervals, CAGED boxes, and dynamic highlights that illuminate every note as the track plays.",
+                pills: ["🎼 Real-Time Intervals", "🎸 Pentatonic & 3NPS Boxes", "⚡ Dynamic Note Highlights"]
+            },
+            {
+                tag: "Feature Spotlight 02",
+                title: "Custom Track & Chord Editor",
+                desc: "Build and arrange backing tracks measure-by-measure. Choose chord voicings, set custom scales, and loop tricky sections for focused speed drills.",
+                pills: ["📐 Custom Measure Counts", "🎹 Comprehensive Chord Library", "🔁 Section Looper"]
+            },
+            {
+                tag: "Feature Spotlight 03",
+                title: "Multi-Track Studio Mixer",
+                desc: "Balance rhythm guitar, bass, lead tracks, and drums with individual channel faders, animated VU meters, panning, reverb sends, and stereo chorus.",
+                pills: ["🎚️ 4-Channel Real-Time Console", "🎛️ Reverb & Chorus Effects", "📊 High-Precision VU Meters"]
+            },
+            {
+                tag: "Feature Spotlight 04",
+                title: "Real-Time Drum Radar Visualizer",
+                desc: "Feel the pocket with an industrial radar display that maps kick, snare, hi-hats, and cymbals in circular sync with the sequencer tempo.",
+                pills: ["🥁 40+ Acoustic Drum Grooves", "🔄 Circular Beat Visualization", "⏱️ 40 - 240 BPM Range"]
+            },
+            {
+                tag: "Feature Spotlight 05",
+                title: "High-Definition SoundFont Engine",
+                desc: "Authentic instrument rendering powered by FluidSynth. Switch between acoustic dreadnought, warm jazz hollowbody, crunchy overdrive, and funk slap bass.",
+                pills: ["🔊 Ultra-Low Latency Audio", "🎸 Multi-Sampled Guitars", "🎻 Realistic Bass & Synth Layers"]
+            },
+            {
+                tag: "Feature Spotlight 06",
+                title: "Studio Track Library & Instant Sharing",
+                desc: "Save your favorite tracks and instantly generate compact QR codes or share links to send progressions to bandmates across iOS, Android, and Web.",
+                pills: ["📁 Local Track Storage", "🔗 1-Tap Universal Share Links", "📷 QR Code Export"]
+            },
+            {
+                tag: "Feature Spotlight 07",
+                title: "Daylight & Dark Studio Themes",
+                desc: "Optimized high-contrast aesthetics for bright outdoor jamming or dark stage performance. Crisp fretboard markers visible in any lighting.",
+                pills: ["☀️ High-Contrast Daylight Mode", "🌙 Deep OLED Dark Mode", "🎨 Tactile Studio Console Design"]
+            }
+        ];
+
+        let currentIndex = 0;
+        const totalSlides = slideData.length;
+        let autoPlayTimer = null;
+
+        const track = document.getElementById('carouselTrack');
+        const dots = document.querySelectorAll('.carousel-dots .dot');
+        const slideTag = document.getElementById('slideTag');
+        const slideTitle = document.getElementById('slideTitle');
+        const slideDesc = document.getElementById('slideDesc');
+        const slidePills = document.getElementById('slidePills');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const viewport = document.getElementById('carouselViewport');
+
+        function updateSlide(index) {
+            currentIndex = (index + totalSlides) % totalSlides;
+            
+            // Slide track movement
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+            // Update dots
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === currentIndex);
+            });
+
+            // Update info text
+            const info = slideData[currentIndex];
+            slideTag.textContent = info.tag;
+            slideTitle.textContent = info.title;
+            slideDesc.textContent = info.desc;
+            
+            slidePills.innerHTML = info.pills
+                .map(pill => `<span class="feature-pill">${pill}</span>`)
+                .join('');
+        }
+
+        function nextSlide() {
+            updateSlide(currentIndex + 1);
+        }
+
+        function prevSlide() {
+            updateSlide(currentIndex - 1);
+        }
+
+        // Button Listeners
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            resetAutoPlay();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            resetAutoPlay();
+        });
+
+        // Dot Navigation
+        dots.forEach((dot, idx) => {
+            dot.addEventListener('click', () => {
+                updateSlide(idx);
+                resetAutoPlay();
+            });
+        });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextSlide();
+                resetAutoPlay();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+                resetAutoPlay();
+            }
+        });
+
+        // Touch & Swipe Support
+        let startX = 0;
+        let currentX = 0;
+        let isSwiping = false;
+
+        viewport.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isSwiping = true;
+            stopAutoPlay();
+        }, { passive: true });
+
+        viewport.addEventListener('touchmove', (e) => {
+            if (!isSwiping) return;
+            currentX = e.touches[0].clientX;
+        }, { passive: true });
+
+        viewport.addEventListener('touchend', () => {
+            if (!isSwiping) return;
+            const diffX = startX - currentX;
+            if (Math.abs(diffX) > 40) {
+                if (diffX > 0) nextSlide();
+                else prevSlide();
+            }
+            isSwiping = false;
+            startAutoPlay();
+        });
+
+        // Auto-play (5 seconds)
+        function startAutoPlay() {
+            if (autoPlayTimer) clearInterval(autoPlayTimer);
+            autoPlayTimer = setInterval(nextSlide, 5000);
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayTimer) {
+                clearInterval(autoPlayTimer);
+                autoPlayTimer = null;
+            }
+        }
+
+        function resetAutoPlay() {
+            stopAutoPlay();
+            startAutoPlay();
+        }
+
+        // Pause on mouse enter
+        viewport.addEventListener('mouseenter', stopAutoPlay);
+        viewport.addEventListener('mouseleave', startAutoPlay);
+
+        // Start autoplay on load
+        startAutoPlay();
+    </script>
+</body>
+</html>
