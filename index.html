@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitarists Collaboration | Open Music Tools & Guitar Studio</title>
+    <meta name="description" content="Guitarists Collaboration is an open, community-driven initiative building high-precision guitar tools. Explore Guitar Studio, our interactive fretboard DAW, drum radar, and browser chord finder.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #090b0f;
+            --surface: #11141b;
+            --surface-elevated: #161b24;
+            --surface-card: #141822;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(0, 245, 212, 0.4);
+            --teal: #00f5d4;
+            --teal-glow: rgba(0, 245, 212, 0.25);
+            --laser-blue: #33b5ff;
+            --blue-glow: rgba(51, 181, 255, 0.25);
+            --orange: #ff5722;
+            --text-primary: #eceff2;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Subtle Studio Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 245, 212, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(51, 181, 255, 0.06) 0%, transparent 40%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .container {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(9, 11, 15, 0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+            z-index: 100;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--teal), var(--laser-blue));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #0c0f14;
+        }
+
+        .logo span {
+            color: var(--teal);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--teal);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--teal);
+            color: #0c0f14;
+            box-shadow: 0 4px 20px var(--teal-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 28px rgba(0, 245, 212, 0.4);
+            background: #26ffdc;
+        }
+
+        .btn-secondary {
+            background: var(--surface-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+            transform: translateY(-2px);
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 245, 212, 0.08);
+            border: 1px solid rgba(0, 245, 212, 0.25);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            color: var(--teal);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--teal);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--teal);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 900;
+            line-height: 1.15;
+            max-width: 920px;
+            margin: 0 auto 24px;
+            background: linear-gradient(180deg, #ffffff 30%, #a4b3c6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(1.05rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 740px;
+            margin: 0 auto 36px;
+            line-height: 1.6;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+
+        /* Featured App Card Preview */
+        .hero-preview {
+            max-width: 980px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 80px rgba(0, 245, 212, 0.1);
+            background: var(--surface);
+        }
+
+        .hero-preview img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .preview-telemetry {
+            position: absolute;
+            bottom: 16px;
+            left: 20px;
+            background: rgba(12, 15, 20, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .preview-telemetry span {
+            color: var(--teal);
+            font-weight: 700;
+        }
+
+        /* Pillars Section (Integrity) */
+        .section-pillars {
+            padding: 100px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto 60px;
+        }
+
+        .section-header .section-tag {
+            color: var(--teal);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 14px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .pillar-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 36px 28px;
+            position: relative;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+        }
+
+        .pillar-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .pillar-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .pillar-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Features Showcase */
+        .section-features {
+            padding: 60px 0 100px;
+        }
+
+        .feature-row {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            margin-bottom: 90px;
+        }
+
+        .feature-row:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .feature-text {
+            flex: 1;
+        }
+
+        .feature-tag {
+            color: var(--laser-blue);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .feature-text h3 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-text p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: var(--teal);
+            font-weight: bold;
+        }
+
+        .feature-visual {
+            flex: 1;
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+            transition: border-color 0.2s;
+        }
+
+        .feature-visual:hover {
+            border-color: rgba(51, 181, 255, 0.35);
+        }
+
+        .feature-visual img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Chord Finder Spotlight */
+        .spotlight-box {
+            background: linear-gradient(135deg, rgba(17, 20, 27, 0.95), rgba(22, 27, 36, 0.95));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 50px 40px;
+            margin: 40px 0 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spotlight-box::after {
+            content: '';
+            position: absolute;
+            right: -60px;
+            top: -60px;
+            width: 240px;
+            height: 240px;
+            background: radial-gradient(circle, var(--teal-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .spotlight-info {
+            max-width: 580px;
+        }
+
+        .spotlight-info h3 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .spotlight-info p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 24px;
+        }
+
+        /* Contribute Banner */
+        .section-contribute {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .contribute-card {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .contribute-card h2 {
+            font-size: 2.2rem;
+            margin-bottom: 16px;
+        }
+
+        .contribute-card p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 32px;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0 40px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--teal);
+        }
+
+        @media (max-width: 860px) {
+            .feature-row {
+                flex-direction: column !important;
+                gap: 30px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .spotlight-box {
+                padding: 30px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">GC</div>
+                Guitarists<span>Collaboration</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#app">Guitar Studio</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="chord-identifier.html">Chord Finder</a></li>
+                <li><a href="#contribute">Contribute</a></li>
+                <li><a href="privacy.html">Privacy</a></li>
+                <li><a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" class="btn btn-primary btn-small">Get App</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge mono">Community-Driven Guitar Initiative</div>
+            <h1>Empowering Guitarists Through Sound, Harmony & Collaboration.</h1>
+            <p>
+                We build focused, high-precision tools for musicians—free from gimmicks, subscriptions, or invasive tracking. Discover <strong>Guitar Studio</strong>, our flagship fretboard visualizer, dual-layer backing track DAW, and practice companion.
+            </p>
+            <div class="hero-actions">
+                <a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" class="btn btn-primary">
+                    <span>🎸</span> Download Guitar Studio
+                </a>
+                <a href="chord-identifier.html" class="btn btn-secondary">
+                    <span>🔍</span> Launch Web Chord Finder
+                </a>
+            </div>
+
+            <!-- Hero Screenshot Showcase -->
+            <div class="hero-preview" id="app">
+                <img src="screenshots/fretboard-play.png" alt="Guitar Studio Interactive Fretboard">
+                <div class="preview-telemetry mono">
+                    <span>GUITAR STUDIO</span> // DUAL-LAYER FRETBOARD & REAL-TIME AUDIO PEAKS
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integrity / Philosophy Pillars -->
+    <section class="section-pillars">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag mono">Our Philosophy</span>
+                <h2>Built With Integrity for Dedicated Players</h2>
+                <p>Technology should empower musicianship, not distract from it.</p>
+            </div>
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <span class="pillar-icon">🔒</span>
+                    <h3>100% Private & Local</h3>
+                    <p>No user accounts, no login walls, and zero behavioral tracking. Your original chord progressions, tracks, and practice habits stay entirely on your device.</p>
+                </div>
+                <div class="pillar-card">
+                    <span class="pillar-icon">🎛️</span>
+                    <h3>Hardware Studio Synthesis</h3>
+                    <p>Powered by an integrated FluidSynth engine with dual rhythm layers, real-time reverb, chorus, and voice-isolated drum synthesis for organic playback.</p>
+                </div>
+                <div class="pillar-card">
+                    <span class="pillar-icon">🤝</span>
+                    <h3>Collaborative Sharing</h3>
+                    <p>Songs are encoded directly into QR codes and deep links—not locked into a proprietary cloud. Share your custom backing tracks with anyone in an instant.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core App Features Deep Dive -->
+    <section class="section-features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag mono">Studio Capabilities</span>
+                <h2>Inside Guitar Studio</h2>
+                <p>Designed like high-end DAW hardware to help you understand harmony, master soloing, and write compelling music.</p>
+            </div>
+
+            <!-- Feature 1: Dual Layer Fretboard -->
+            <div class="feature-row">
+                <div class="feature-text">
+                    <span class="feature-tag mono">Fretboard Visualization</span>
+                    <h3>24-Fret Interactive Neck</h3>
+                    <p>See exactly what is happening in the music. View active playing chord shapes overlaid seamlessly on scale and modal intervals with radiant note illumination and audio-reactive peaks.</p>
+                    <ul class="feature-list">
+                        <li>Simultaneous chord-tone and scale-tone mapping</li>
+                        <li>Dynamic audio volume glow bursts on active chords</li>
+                        <li>Adjustable interval, finger, and note-name displays</li>
+                        <li>Interactive fret-by-fret chord voice exploration</li>
+                    </ul>
+                </div>
+                <div class="feature-visual">
+                    <img src="screenshots/fretboard-play.png" alt="Interactive Fretboard Display">
+                </div>
+            </div>
+
+            <!-- Feature 2: Drum Radar -->
+            <div class="feature-row">
+                <div class="feature-text">
+                    <span class="feature-tag mono">Rhythm Telemetry</span>
+                    <h3>Industrial Drum Radar Visualizer</h3>
+                    <p>A precision 16-tap vector scope that replaces cluttered circles with a clean, CAD-inspired telemetry display. Watch drum strikes flash with voice-colored LEDs and vector sweep needle precision.</p>
+                    <ul class="feature-list">
+                        <li>Dedicated color codes for Kick, Snare, Hi-Hats, and Cymbals</li>
+                        <li>Industrial step indices and quadrant subdivision markers</li>
+                        <li>Zero bezel obstruction with flush scope aperture</li>
+                        <li>Synchronized real-time tempo and bar telemetry</li>
+                    </ul>
+                </div>
+                <div class="feature-visual">
+                    <img src="screenshots/drum-radar.png" alt="Industrial Drum Radar Scope">
+                </div>
+            </div>
+
+            <!-- Feature 3: Multi-Track Console Mixer -->
+            <div class="feature-row">
+                <div class="feature-text">
+                    <span class="feature-tag mono">Audio Synthesis</span>
+                    <h3>Studio Channel Mixer & Automation</h3>
+                    <p>Mix your rhythm section with precision faders. Layer secondary chords and rhythm instruments, adjust master reverb and chorus acoustics, and program automated instrument shifts per bar.</p>
+                    <ul class="feature-list">
+                        <li>Individual channel control for Drums, Bass, Chords, and Layer 2</li>
+                        <li>Acoustic Reverb and Chorus depth controls</li>
+                        <li>Per-bar automation of rhythm patterns and instrument voices</li>
+                        <li>Responsive VU meters with real-time level monitoring</li>
+                    </ul>
+                </div>
+                <div class="feature-visual">
+                    <img src="screenshots/channel-mixer.png" alt="Channel Console Mixer">
+                </div>
+            </div>
+
+            <!-- Feature 4: Step Editor & Track Library -->
+            <div class="feature-row">
+                <div class="feature-text">
+                    <span class="feature-tag mono">Songwriting</span>
+                    <h3>Tactile Progression Editor & Library</h3>
+                    <p>Quickly build custom backing tracks bar-by-bar. Select roots, qualities, extensions, and strumming grooves, then save them directly to your personal device track library.</p>
+                    <ul class="feature-list">
+                        <li>Complete library of rock, blues, jazz, reggae, and acoustic grooves</li>
+                        <li>Instant QR code generation to share your tracks with students or bandmates</li>
+                        <li>Offline storage—never lose access to your practice tracks</li>
+                    </ul>
+                </div>
+                <div class="feature-visual">
+                    <img src="screenshots/track-editor.png" alt="Track Step Editor">
+                </div>
+            </div>
+
+            <!-- Web Chord Finder Spotlight -->
+            <div class="spotlight-box">
+                <div class="spotlight-info">
+                    <span class="feature-tag mono" style="color: var(--teal);">Free Web Tool</span>
+                    <h3>Interactive Web Chord Identifier</h3>
+                    <p>Click frets on our interactive virtual neck to identify complex chord voicings, hear authentic audio playback, and export chord structures straight into the Guitar Studio app.</p>
+                    <a href="chord-identifier.html" class="btn btn-primary">Open Chord Finder →</a>
+                </div>
+                <div style="font-size: 5rem; opacity: 0.85;">🎸</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contribute Section -->
+    <section class="section-contribute" id="contribute">
+        <div class="container">
+            <div class="contribute-card">
+                <span class="hero-badge mono">Open Collaboration</span>
+                <h2>Teach Guitar? Let's Collaborate.</h2>
+                <p>
+                    If you publish guitar lessons, harmonic concepts, or YouTube tutorials, we invite you to share them with our community. Submit your lesson link, and we'll create dedicated practice backing tracks and feature your channel directly inside Guitar Studio.
+                </p>
+                <a href="mailto:guitarly_app@gmail.com?subject=Guitar%20Studio%20Lesson%20Collaboration" class="btn btn-primary">
+                    <span>✉️</span> Submit a Lesson Track
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-inner">
+            <div>
+                <p>&copy; 2026 <strong>Guitarists Collaboration</strong>. Made for musicians.</p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio">Google Play</a></li>
+                <li><a href="chord-identifier.html">Chord Finder</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="mailto:guitarly_app@gmail.com">Contact</a></li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chord Identifier | Guitarists Collaboration</title>
+    <meta name="description"
+        content="Identify any guitar chord instantly. Click notes on the interactive 12-fret guitar fretboard, select custom tunings, and hear the chords play.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;900&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --fret-board-wood: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            --fret-wire: linear-gradient(180deg, #94a3b8 0%, #cbd5e1 50%, #94a3b8 100%);
+            --string-color: linear-gradient(90deg, #e2e8f0 0%, #94a3b8 50%, #475569 100%);
+            --marker-glow: 0 0 15px rgba(59, 130, 246, 0.8), 0 0 5px rgba(59, 130, 246, 0.5);
+            --marker-active-bg: #3b82f6;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+        }
+
+        body {
+            padding-top: 80px;
+            background-color: var(--bg-darker);
+        }
+
+        .tool-header {
+            text-align: center;
+            padding: 40px 0 20px 0;
+        }
+
+        .tool-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .tool-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Split Workspace */
+        .workspace-split {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            align-items: start;
+        }
+
+        @media (min-width: 768px) {
+            .workspace-split {
+                grid-template-columns: 280px 1fr;
+                gap: 40px;
+            }
+        }
+
+        /* Left Column: Fretboard */
+        .fretboard-column-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Right Column: Dashboard */
+        .dashboard-column-right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        /* Controls Panel */
+        .controls-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .control-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .select-input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .select-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-container input {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Vertical Fretboard Outer */
+        .fretboard-outer-vertical {
+            display: flex;
+            gap: 12px;
+            background: #0b0f19;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            padding: 24px 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 250px;
+            position: relative;
+        }
+
+        /* Fret numbers vertical column */
+        .fret-numbers-vertical {
+            display: flex;
+            flex-direction: column;
+            width: 28px;
+            height: 550px; /* height of vertical fretboard */
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .fret-number-vertical {
+            text-align: right;
+            padding-right: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        /* Fretboard Vertical Neck */
+        .fretboard-vertical {
+            flex-grow: 1;
+            height: 550px;
+            position: relative;
+            background: var(--fret-board-wood);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* Nut Line (horizontal at top of neck) */
+        .nut-line-vertical {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 48px;
+            height: 8px;
+            background: #e2e8f0;
+            box-shadow: 0 1px 4px rgba(255, 255, 255, 0.4);
+            z-index: 5;
+        }
+
+        /* Horizontal Fret Wires */
+        .fret-wires-vertical {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 56px; /* start after nut */
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .fret-wire-vertical {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--fret-wire);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Fret Markers (dots in center of neck) */
+        .fret-markers-vertical {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 56px; /* start after nut */
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .fret-marker-vertical {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .fret-marker-vertical.double-dot {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Interactive String Columns */
+        .fretboard-row-vertical {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            z-index: 3;
+        }
+
+        /* String Status Cell (at top of each column) */
+        .string-status-cell-vertical {
+            height: 48px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.6);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            user-select: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            transition: background 0.3s, color 0.3s;
+            position: relative;
+        }
+
+        .string-status-cell-vertical.open-status {
+            color: var(--accent-success);
+        }
+
+        .string-status-cell-vertical.muted-status {
+            color: #ef4444;
+        }
+
+        .string-status-cell-vertical.fretted-status {
+            color: var(--text-muted);
+        }
+
+        .string-status-cell-vertical:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Fret cells container (vertical stack) */
+        .fret-cells-container-vertical {
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 48px);
+            width: 100%;
+            position: relative;
+            padding-top: 8px; /* offset matching nut height */
+        }
+
+        /* Clickable fret cell */
+        .fret-cell-vertical {
+            width: 100%;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fret-cell-vertical:hover::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            bottom: 2px;
+            left: 2px;
+            right: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        /* Glowing Note Marker */
+        .note-marker {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--marker-active-bg);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--marker-glow);
+            z-index: 4;
+            animation: popIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            user-select: none;
+        }
+
+        .note-marker.open-note {
+            background: var(--accent-success);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+            width: 24px;
+            height: 24px;
+            font-size: 0.7rem;
+        }
+
+        /* Results Split Grid */
+        .results-section-split {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 992px) {
+            .results-section-split {
+                grid-template-columns: 1.2fr 0.8fr;
+                gap: 24px;
+            }
+        }
+
+        .result-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .result-empty {
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .result-empty svg {
+            width: 64px;
+            height: 64px;
+            stroke: var(--text-muted);
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Primary Match UI */
+        .primary-chord-display {
+            text-align: center;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .chord-name-badge {
+            display: inline-block;
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: white;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .chord-type-desc {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Notes Breakdown styling */
+        .notes-list {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .note-bubble {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 70px;
+        }
+
+        .note-bubble .note-label {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        .note-bubble .note-function {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .note-bubble.is-root {
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.15);
+        }
+
+        .note-bubble.is-root .note-label {
+            color: var(--accent);
+        }
+
+        /* Matches List Sidebar */
+        .matches-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .matches-sidebar h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .match-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .match-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+            transform: translateX(3px);
+        }
+
+        .match-item.active {
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .match-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        .match-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .match-details-btn {
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Keyframe animations */
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Info card */
+        .info-card {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 16px;
+            padding: 20px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .info-card h4 {
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        /* Navbar Active link highlight */
+        .nav-links a.active {
+            color: var(--text-light);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 4px;
+        }
+
+        /* App Export Button styles */
+        .app-export-btn {
+            margin-top: 20px;
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: white;
+            cursor: pointer;
+        }
+
+        .app-export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+            background: linear-gradient(135deg, var(--primary-hover) 0%, #1e40af 100%);
+        }
+
+        .app-export-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo logo-nav">
+                <span class="logo-main" style="color:#eceff2;font-family:Outfit,sans-serif;font-weight:800;">Guitarists</span> <span class="logo-suffix" style="color:#00f5d4;font-family:Outfit,sans-serif;font-weight:800;">Collaboration</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Guitar Studio</a></li>
+                
+                <li><a href="chord-identifier.html" class="active">Chord Finder</a></li>
+                <li><a href="privacy.html">Privacy</a></li>
+                <li><a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" class="btn btn-small">Get Guitar Studio</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="tool-header">
+            <h1>Chord Identifier</h1>
+            <p>Select frets on the interactive neck to identify guitar chords. Play individual notes, change tunings, and hear the full chord strummed.</p>
+        </header>
+
+        <!-- Split pane layout -->
+        <div class="workspace-split">
+            <!-- Left Pane: Vertical Fretboard -->
+            <div class="fretboard-column-left">
+                <div class="fretboard-outer-vertical">
+                    <!-- Fret number labels vertical down the side -->
+                    <div id="fret-numbers" class="fret-numbers-vertical"></div>
+
+                    <!-- Fretboard itself -->
+                    <div id="guitar-fretboard" class="fretboard-vertical">
+                        <!-- Dynamic overlays -->
+                        <div class="nut-line-vertical"></div>
+                        <div id="fret-wires" class="fret-wires-vertical"></div>
+                        <div id="fret-markers" class="fret-markers-vertical"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Pane: Dashboard & Results -->
+            <div class="dashboard-column-right">
+                <!-- Controls card -->
+                <div class="controls-card">
+                    <div class="control-group">
+                        <span class="control-label">Tuning:</span>
+                        <select id="tuning-select" class="select-input">
+                            <option value="standard">Standard (E A D G B E)</option>
+                            <option value="drop_d">Drop D (D A D G B E)</option>
+                            <option value="dadgad">DADGAD (D A D G A D)</option>
+                            <option value="half_step_down">Half-Step Down (E♭ A♭ D♭ G♭ B♭ E♭)</option>
+                            <option value="open_g">Open G (D G D G B D)</option>
+                            <option value="open_d">Open D (D A D F♯ A D)</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="autoplay-check" checked>
+                            <span>Play sound on click</span>
+                        </label>
+                    </div>
+
+                    <div class="btn-group">
+                        <button id="clear-btn" class="btn btn-secondary btn-small">Clear Fretboard</button>
+                        <button id="play-chord-btn" class="btn btn-primary btn-small" disabled>Strum Chord</button>
+                    </div>
+                </div>
+
+                <!-- Results split container -->
+                <div class="results-section-split">
+                    <!-- Primary result -->
+                    <div id="result-display" class="result-card">
+                        <div class="result-empty">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 12h8"></path>
+                                <path d="M12 8v8"></path>
+                            </svg>
+                            <h3>No Notes Selected</h3>
+                            <p>Select frets on two or more strings to identify the chord.</p>
+                        </div>
+                    </div>
+
+                    <!-- Alternate matches -->
+                    <div class="matches-sidebar">
+                        <h3>Alternative Matches</h3>
+                        <div id="matches-list" style="display: flex; flex-direction: column; gap: 10px;">
+                            <div style="color: var(--text-muted); font-size: 0.95rem; font-style: italic; padding: 10px;">
+                                No other matches found yet.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h4>💡 Chord Identification Tips</h4>
+                    <p>Chords are identified using pitch-class analysis. By checking different notes as roots, the engine can find standard major/minor triads, 7th chords, suspensions, power chords, and more. If a chord is played with a note in the bass other than the root (e.g. C major with an E on the lowest string), it will be correctly identified as an inversion (like C/E). Power chords (5ths) require at least 2 distinct notes, and full triads require 3.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo logo-nav">
+                        <span class="logo-main" style="color:#eceff2;font-family:Outfit,sans-serif;font-weight:800;">Guitarists</span> <span class="logo-suffix" style="color:#00f5d4;font-family:Outfit,sans-serif;font-weight:800;">Collaboration</span>
+                    </a>
+                    <p>Elevating the guitar experience through innovation and technology.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Links</h4>
+                    <ul>
+                        <li><a href="chord-identifier.html">Chord Finder</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="https://play.google.com/store/apps/dev?id=7664260184801180250">Google Play Store</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 G9: guitar apps. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS Fretboard and Chord Detection Engine -->
+    <script>
+        // Note naming configuration
+        const NOTES_SHARP = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+        const NOTES_FLAT = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
+
+        // Tuning base MIDI notes (from string 1 (high E) to string 6 (low E))
+        const TUNING_PRESETS = {
+            standard: [64, 59, 55, 50, 45, 40],       // E4, B3, G3, D3, A2, E2
+            drop_d: [64, 59, 55, 50, 45, 38],         // E4, B3, G3, D3, A2, D2
+            dadgad: [62, 57, 55, 50, 45, 38],         // D4, A3, G3, D3, A2, D2
+            half_step_down: [63, 58, 54, 49, 44, 39], // Eb4, Bb3, Gb3, Db3, Ab2, Eb2
+            open_g: [62, 59, 55, 50, 43, 38],         // D4, B3, G3, D3, G2, D2
+            open_d: [62, 57, 54, 50, 45, 38]          // D4, A3, F#3, D3, A2, D2
+        };
+
+        // Chord Definition Formulas
+        const CHORD_FORMULAS = [
+            { name: "Major", suffix: "", intervals: [0, 4, 7], optional: [] },
+            { name: "Minor", suffix: "m", intervals: [0, 3, 7], optional: [] },
+            { name: "Dominant 7th", suffix: "7", intervals: [0, 4, 7, 10], optional: [7] },
+            { name: "Major 7th", suffix: "maj7", intervals: [0, 4, 7, 11], optional: [7] },
+            { name: "Minor 7th", suffix: "m7", intervals: [0, 3, 7, 10], optional: [7] },
+            { name: "Suspended 4th", suffix: "sus4", intervals: [0, 5, 7], optional: [] },
+            { name: "Suspended 2nd", suffix: "sus2", intervals: [0, 2, 7], optional: [] },
+            { name: "Diminished", suffix: "dim", intervals: [0, 3, 6], optional: [] },
+            { name: "Augmented", suffix: "aug", intervals: [0, 4, 8], optional: [] },
+            { name: "Minor 7th flat 5", suffix: "m7b5", intervals: [0, 3, 6, 10], optional: [] },
+            { name: "Diminished 7th", suffix: "dim7", intervals: [0, 3, 6, 9], optional: [] },
+            { name: "Dominant 9th", suffix: "9", intervals: [0, 2, 4, 7, 10], optional: [7] },
+            { name: "Major 9th", suffix: "maj9", intervals: [0, 2, 4, 7, 11], optional: [7] },
+            { name: "Minor 9th", suffix: "m9", intervals: [0, 2, 3, 7, 10], optional: [7] },
+            { name: "Major 6th", suffix: "6", intervals: [0, 4, 7, 9], optional: [7] },
+            { name: "Minor 6th", suffix: "m6", intervals: [0, 3, 7, 9], optional: [7] },
+            { name: "Add 9", suffix: "add9", intervals: [0, 2, 4, 7], optional: [] },
+            { name: "Minor Add 9", suffix: "madd9", intervals: [0, 2, 3, 7], optional: [] },
+            { name: "Power Chord", suffix: "5", intervals: [0, 7], optional: [] }
+        ];
+
+        // State variables
+        let currentTuning = "standard";
+        // fretboardState[stringIndex] stores:
+        // -1: muted string
+        // 0: open string
+        // 1..12: fretted position
+        let fretboardState = [-1, -1, -1, -1, -1, -1]; 
+
+        // Web Audio Synth Context
+        let audioCtx = null;
+
+        // Initialize Audio context on first user click
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // Play synthetic guitar pluck
+        function playTone(midiNote, duration = 1.0) {
+            initAudio();
+            if (!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+
+            osc.type = 'triangle';
+            const freq = 440 * Math.pow(2, (midiNote - 69) / 12);
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+            // Subtle frequency pitch envelope on pluck
+            osc.frequency.setValueAtTime(freq * 1.015, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(freq, audioCtx.currentTime + 0.04);
+
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(freq * 4, audioCtx.currentTime);
+            filter.frequency.exponentialRampToValueAtTime(freq * 1.2, audioCtx.currentTime + duration);
+
+            // ADSR Envelope
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.008); // attack
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration); // decay/release
+
+            osc.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        // Play all selected notes strummed
+        function strumChord() {
+            const activeNotes = getActiveNotes();
+            if (activeNotes.length === 0) return;
+
+            // Sort from lowest midi note (low string) to highest midi note
+            const sorted = [...activeNotes].sort((a, b) => a.midiNote - b.midiNote);
+
+            sorted.forEach((noteObj, idx) => {
+                setTimeout(() => {
+                    playTone(noteObj.midiNote, 1.4);
+                }, idx * 75); // 75ms delay to simulate natural pick sweep
+            });
+        }
+
+        // Get absolute notes from current fretboard selections
+        function getActiveNotes() {
+            const notes = [];
+            const baseNotes = TUNING_PRESETS[currentTuning];
+
+            for (let s = 0; s < 6; s++) {
+                const fret = fretboardState[s];
+                if (fret >= 0) {
+                    const midiNote = baseNotes[s] + fret;
+                    const pitchClass = midiNote % 12;
+                    notes.push({
+                        stringIndex: s,
+                        fret: fret,
+                        midiNote: midiNote,
+                        pitchClass: pitchClass
+                    });
+                }
+            }
+            return notes;
+        }
+
+        // Enharmonic helper to format note names properly based on the root note
+        function getFormattedNoteName(pitchClass, rootPitchClass = null) {
+            // Spell notes flat if root is F, Bb, Eb, Ab, Db, Gb
+            const flatRoots = [5, 10, 3, 8, 1, 6];
+            let useFlat = false;
+            if (rootPitchClass !== null && flatRoots.includes(rootPitchClass)) {
+                useFlat = true;
+            } else if (rootPitchClass === null && flatRoots.includes(pitchClass)) {
+                useFlat = true;
+            }
+            return useFlat ? NOTES_FLAT[pitchClass] : NOTES_SHARP[pitchClass];
+        }
+
+        // Return descriptive name for intervals
+        function getIntervalName(semitones) {
+            const names = {
+                0: "R",
+                1: "♭2",
+                2: "2",
+                3: "♭3",
+                4: "3",
+                5: "4",
+                6: "♭5",
+                7: "5",
+                8: "♯5",
+                9: "6",
+                10: "♭7",
+                11: "7"
+            };
+            return names[semitones] || semitones.toString();
+        }
+
+        // Chord identification core algorithm
+        function identifyChords() {
+            const activeNotes = getActiveNotes();
+            if (activeNotes.length < 2) {
+                return [];
+            }
+
+            // Find lowest note played (the bass note)
+            const sortedByPitch = [...activeNotes].sort((a, b) => a.midiNote - b.midiNote);
+            const bassNote = sortedByPitch[0];
+
+            // Get unique pitch classes in play
+            const uniquePitchClasses = Array.from(new Set(activeNotes.map(n => n.pitchClass)));
+
+            const matches = [];
+
+            // Evaluate each unique pitch class as a potential root
+            uniquePitchClasses.forEach(root => {
+                // Compute pitch classes relative to root
+                const relativePitches = uniquePitchClasses.map(p => (p - root + 12) % 12);
+                
+                CHORD_FORMULAS.forEach(formula => {
+                    const formulaSet = new Set(formula.intervals);
+                    const requiredSet = new Set(formula.intervals.filter(i => !formula.optional.includes(i)));
+
+                    // Condition 1: All relative pitches must fit inside the formula's allowed intervals
+                    const allFit = relativePitches.every(p => formulaSet.has(p));
+
+                    // Condition 2: All required intervals in the formula must be present in relative pitches
+                    const allRequiredPresent = Array.from(requiredSet).every(r => relativePitches.includes(r));
+
+                    if (allFit && allRequiredPresent) {
+                        // We have a match! Calculate score of completeness
+                        const presentIntervals = formula.intervals.filter(i => relativePitches.includes(i));
+                        const completeness = presentIntervals.length / formula.intervals.length;
+
+                        // Check if it's an inversion
+                        const isInverted = bassNote.pitchClass !== root;
+
+                        matches.push({
+                            root: root,
+                            formula: formula,
+                            completeness: completeness,
+                            isInverted: isInverted,
+                            bassNotePitchClass: bassNote.pitchClass,
+                            relativePitches: relativePitches,
+                            presentIntervals: presentIntervals
+                        });
+                    }
+                });
+            });
+
+            // Sort matches
+            matches.sort((a, b) => {
+                if (a.isInverted !== b.isInverted) {
+                    return a.isInverted ? 1 : -1; // Root position preferred
+                }
+                if (a.completeness !== b.completeness) {
+                    return b.completeness - a.completeness; // Complete chords preferred
+                }
+                return a.formula.intervals.length - b.formula.intervals.length;
+            });
+
+            return matches;
+        }
+
+        // Render Chord details into Results Section
+        function updateResults() {
+            const matches = identifyChords();
+            const activeNotes = getActiveNotes();
+            const resultDisplay = document.getElementById("result-display");
+            const matchesList = document.getElementById("matches-list");
+            const playBtn = document.getElementById("play-chord-btn");
+
+            if (activeNotes.length === 0) {
+                playBtn.disabled = true;
+                resultDisplay.innerHTML = `
+                    <div class="result-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 12h8"></path>
+                            <path d="M12 8v8"></path>
+                        </svg>
+                        <h3>No Notes Selected</h3>
+                        <p>Select frets on two or more strings to identify the chord.</p>
+                    </div>
+                `;
+                matchesList.innerHTML = `
+                    <div style="color: var(--text-muted); font-size: 0.95rem; font-style: italic; padding: 10px;">
+                        No other matches found yet.
+                    </div>
+                `;
+                return;
+            }
+
+            if (activeNotes.length < 2) {
+                playBtn.disabled = false;
+                resultDisplay.innerHTML = `
+                    <div class="result-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5-2 4-2 4 2 4 2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <h3>Single Note Selected</h3>
+                        <p>Play at least 2 distinct notes to detect a chord progression or voicing.</p>
+                    </div>
+                `;
+                matchesList.innerHTML = `
+                    <div style="color: var(--text-muted); font-size: 0.95rem; font-style: italic; padding: 10px;">
+                        Need more notes for alternative matches.
+                    </div>
+                `;
+                return;
+            }
+
+            playBtn.disabled = false;
+
+            if (matches.length === 0) {
+                resultDisplay.innerHTML = `
+                    <div class="result-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 9h.01"></path>
+                            <path d="M16 9h.01"></path>
+                            <path d="M10 15h4"></path>
+                        </svg>
+                        <h3>Unknown Chord / Voicing</h3>
+                        <p>Selected notes: ${Array.from(new Set(activeNotes.map(n => getFormattedNoteName(n.pitchClass)))).join(', ')}</p>
+                        <p style="font-size: 0.85rem; margin-top: 10px;">The chord might be an unlisted extension. Try adjusting your fretted notes.</p>
+                    </div>
+                `;
+                matchesList.innerHTML = `
+                    <div style="color: var(--text-muted); font-size: 0.95rem; font-style: italic; padding: 10px;">
+                        No matches found.
+                    </div>
+                `;
+                return;
+            }
+
+            renderPrimaryMatch(matches[0], matches);
+        }
+
+        // Render detail card for primary matched chord
+        function renderPrimaryMatch(match, allMatches) {
+            const rootName = getFormattedNoteName(match.root);
+            const fullName = rootName + match.formula.suffix + (match.isInverted ? "/" + getFormattedNoteName(match.bassNotePitchClass, match.root) : "");
+            const typeDesc = match.isInverted ? `${match.formula.name} (Inverted)` : match.formula.name;
+
+            let notesHTML = "";
+            const intervalsSorted = [...match.formula.intervals].sort((a,b) => a - b);
+            
+            intervalsSorted.forEach(semitone => {
+                const notePC = (match.root + semitone) % 12;
+                const noteName = getFormattedNoteName(notePC, match.root);
+                const isRoot = semitone === 0;
+
+                const isPlayed = getActiveNotes().some(n => n.pitchClass === notePC);
+
+                if (isPlayed) {
+                    notesHTML += `
+                        <div class="note-bubble ${isRoot ? 'is-root' : ''}">
+                            <span class="note-label">${noteName}</span>
+                            <span class="note-function">${getIntervalName(semitone)}</span>
+                        </div>
+                    `;
+                }
+            });
+
+            const resultDisplay = document.getElementById("result-display");
+            resultDisplay.innerHTML = `
+                <div class="primary-chord-display">
+                    <span class="chord-name-badge">${fullName}</span>
+                    <div class="chord-type-desc">${typeDesc}</div>
+                    <div class="notes-list">
+                        ${notesHTML}
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">
+                        <strong>Root:</strong> ${rootName} | 
+                        <strong>Spelling:</strong> ${match.formula.intervals.map(s => getFormattedNoteName((match.root + s) % 12, match.root)).join(' - ')}
+                    </div>
+                    <button class="app-export-btn" onclick="exportChordToGuitarStudio('${fullName}')">
+                        <span>🎸 Practice in Guitar Studio</span>
+                    </button>
+                </div>
+            `;
+
+            // Render alternative matches in sidebar
+            const matchesList = document.getElementById("matches-list");
+            matchesList.innerHTML = "";
+
+            const alternates = allMatches.slice(1);
+            if (alternates.length === 0) {
+                matchesList.innerHTML = `
+                    <div style="color: var(--text-muted); font-size: 0.95rem; font-style: italic; padding: 10px;">
+                        No other matches found.
+                    </div>
+                `;
+            } else {
+                alternates.forEach((alt, idx) => {
+                    const altRoot = getFormattedNoteName(alt.root);
+                    const altFull = altRoot + alt.formula.suffix + (alt.isInverted ? "/" + getFormattedNoteName(alt.bassNotePitchClass, alt.root) : "");
+                    const altDesc = alt.isInverted ? `${alt.formula.name} (Inv)` : alt.formula.name;
+
+                    const item = document.createElement("div");
+                    item.className = "match-item";
+                    item.innerHTML = `
+                        <div>
+                            <div class="match-title">${altFull}</div>
+                            <div class="match-subtitle">${altDesc}</div>
+                        </div>
+                        <span class="match-details-btn">Select →</span>
+                    `;
+
+                    item.addEventListener("click", () => {
+                        const newMatches = [alt, ...allMatches.filter((_, i) => i !== (idx + 1))];
+                        renderPrimaryMatch(newMatches[0], newMatches);
+                        document.querySelectorAll(".match-item").forEach(el => el.classList.remove("active"));
+                        item.classList.add("active");
+                    });
+
+                    matchesList.appendChild(item);
+                });
+            }
+        }
+
+        // Draw and update Fretboard UI (Vertical configuration)
+        function buildFretboard() {
+            const fretboard = document.getElementById("guitar-fretboard");
+            
+            // Clear prior dynamic columns
+            const dynamicRows = fretboard.querySelectorAll(".fretboard-row-vertical");
+            dynamicRows.forEach(c => c.remove());
+
+            const baseNotes = TUNING_PRESETS[currentTuning];
+            const relativeFretPositions = calculateFretPositions(12);
+
+            // Render columns: low E (string 6, s=5) to high E (string 1, s=0)
+            // Leftmost column is string index 5, rightmost column is string index 0.
+            for (let s = 5; s >= 0; s--) {
+                const column = document.createElement("div");
+                column.className = "fretboard-row-vertical";
+
+                // String Status Selector at the top
+                const statusCell = document.createElement("div");
+                statusCell.className = "string-status-cell-vertical";
+                updateStatusCellLabel(statusCell, s);
+
+                statusCell.addEventListener("click", () => {
+                    initAudio();
+                    if (fretboardState[s] === -1) {
+                        fretboardState[s] = 0; // Play Open string
+                        if (document.getElementById("autoplay-check").checked) {
+                            playTone(baseNotes[s]);
+                        }
+                    } else {
+                        fretboardState[s] = -1; // Mute string
+                    }
+                    updateStatusCellLabel(statusCell, s);
+                    renderNoteMarkers();
+                    updateResults();
+                });
+                column.appendChild(statusCell);
+
+                // Add absolute vertical string line inside this column
+                const stringLine = document.createElement("div");
+                stringLine.className = "string-line-vertical";
+                // String gauge sizes: 6th string thickest (3.5px) down to 1st string thinnest (1px)
+                const gauge = 1.0 + (s * 0.5);
+                stringLine.style.width = `${gauge}px`;
+                stringLine.style.left = `calc(50% - ${gauge/2}px)`;
+                stringLine.style.position = "absolute";
+                stringLine.style.top = "48px"; // start after status cell
+                stringLine.style.bottom = "0";
+                stringLine.style.background = "var(--string-color)";
+                stringLine.style.zIndex = "2";
+                stringLine.style.pointerEvents = "none";
+                column.appendChild(stringLine);
+
+                // Add vertical fret cells container
+                const cellsContainer = document.createElement("div");
+                cellsContainer.className = "fret-cells-container-vertical";
+                column.appendChild(cellsContainer);
+
+                // Add 12 frets for this string running vertically
+                for (let f = 1; f <= 12; f++) {
+                    const cell = document.createElement("div");
+                    cell.className = "fret-cell-vertical";
+                    cell.dataset.string = s;
+                    cell.dataset.fret = f;
+
+                    const prevPos = f === 1 ? 0 : relativeFretPositions[f - 2];
+                    const currPos = relativeFretPositions[f - 1];
+                    const heightPercent = (currPos - prevPos) * 100;
+                    cell.style.height = `${heightPercent}%`;
+                    cell.style.flex = `0 0 ${heightPercent}%`;
+
+                    cell.addEventListener("click", () => {
+                        initAudio();
+                        const currentFret = fretboardState[s];
+
+                        if (currentFret === f) {
+                            fretboardState[s] = -1; // toggle off (mute)
+                        } else {
+                            fretboardState[s] = f; // toggle on (fret)
+                            if (document.getElementById("autoplay-check").checked) {
+                                playTone(baseNotes[s] + f);
+                            }
+                        }
+                        
+                        updateStatusCellLabel(column.querySelector(".string-status-cell-vertical"), s);
+                        renderNoteMarkers();
+                        updateResults();
+                    });
+
+                    cellsContainer.appendChild(cell);
+                }
+
+                fretboard.appendChild(column);
+            }
+
+            // Build fret numbers vertically on the left
+            const numbersCol = document.getElementById("fret-numbers");
+            numbersCol.innerHTML = "";
+            
+            // Spacer matching height of status cell + nut line (48px + 8px = 56px)
+            const spacerLabel = document.createElement("div");
+            spacerLabel.style.height = "56px";
+            spacerLabel.style.flex = "0 0 56px";
+            spacerLabel.style.visibility = "hidden";
+            numbersCol.appendChild(spacerLabel);
+
+            // 12 Fret number labels aligned to tapered vertical cell heights
+            for (let f = 1; f <= 12; f++) {
+                const prevPos = f === 1 ? 0 : relativeFretPositions[f - 2];
+                const currPos = relativeFretPositions[f - 1];
+                const heightPercent = (currPos - prevPos) * 100;
+
+                const label = document.createElement("div");
+                label.className = "fret-number-vertical";
+                label.style.height = `${heightPercent}%`;
+                label.style.flex = `0 0 ${heightPercent}%`;
+                label.textContent = f.toString();
+                numbersCol.appendChild(label);
+            }
+
+            // Draw horizontal fret lines (fret wires)
+            const wiresLayer = document.getElementById("fret-wires");
+            wiresLayer.innerHTML = "";
+
+            relativeFretPositions.forEach(pos => {
+                const wire = document.createElement("div");
+                wire.className = "fret-wire-vertical";
+                wire.style.top = `${pos * 100}%`;
+                wiresLayer.appendChild(wire);
+            });
+
+            // Draw fretboard markers (inlays in vertical center of neck)
+            const markersLayer = document.getElementById("fret-markers");
+            markersLayer.innerHTML = "";
+            const markerFrets = [3, 5, 7, 9, 12];
+            
+            markerFrets.forEach(fretNum => {
+                const posStart = fretNum === 1 ? 0 : relativeFretPositions[fretNum - 2];
+                const posEnd = relativeFretPositions[fretNum - 1];
+                const middlePos = (posStart + posEnd) / 2;
+
+                if (fretNum === 12) {
+                    // Double dots horizontally offset
+                    const dot1 = document.createElement("div");
+                    dot1.className = "fret-marker-vertical double-dot";
+                    dot1.style.top = `${middlePos * 100}%`;
+                    dot1.style.left = "30%";
+
+                    const dot2 = document.createElement("div");
+                    dot2.className = "fret-marker-vertical double-dot";
+                    dot2.style.top = `${middlePos * 100}%`;
+                    dot2.style.left = "70%";
+
+                    markersLayer.appendChild(dot1);
+                    markersLayer.appendChild(dot2);
+                } else {
+                    // Single dot in absolute horizontal center (50%)
+                    const dot = document.createElement("div");
+                    dot.className = "fret-marker-vertical";
+                    dot.style.top = `${middlePos * 100}%`;
+                    markersLayer.appendChild(dot);
+                }
+            });
+
+            renderNoteMarkers();
+        }
+
+        // Tapered fret scaling formula
+        function calculateFretPositions(numFrets) {
+            const positions = [];
+            let currentPosition = 0;
+            const scale = 1;
+            let remainingScale = scale;
+            
+            for (let i = 1; i <= numFrets; i++) {
+                const fretHeight = remainingScale / 17.817;
+                currentPosition += fretHeight;
+                remainingScale -= fretHeight;
+                positions.push(currentPosition / scale);
+            }
+            
+            const maxVal = positions[positions.length - 1];
+            return positions.map(p => p / maxVal);
+        }
+
+        // Update string status label (X, O or empty)
+        function updateStatusCellLabel(cell, stringIdx) {
+            const fret = fretboardState[stringIdx];
+            if (fret === -1) {
+                cell.textContent = "×";
+                cell.className = "string-status-cell-vertical muted-status";
+            } else if (fret === 0) {
+                cell.textContent = "○";
+                cell.className = "string-status-cell-vertical open-status";
+            } else {
+                cell.textContent = fret.toString();
+                cell.className = "string-status-cell-vertical fretted-status";
+            }
+        }
+
+        // Draw note circle labels over active frets
+        function renderNoteMarkers() {
+            const baseNotes = TUNING_PRESETS[currentTuning];
+            document.querySelectorAll(".note-marker").forEach(m => m.remove());
+
+            const fretboard = document.getElementById("guitar-fretboard");
+            const columns = fretboard.querySelectorAll(".fretboard-row-vertical");
+
+            for (let s = 0; s < 6; s++) {
+                const fret = fretboardState[s];
+                // DOM columns order is left-to-right (s=5 down to s=0)
+                // Hence: DOM index is 5 - s
+                const colEl = columns[5 - s];
+                if (!colEl) continue;
+
+                if (fret === 0) {
+                    const statusCell = colEl.querySelector(".string-status-cell-vertical");
+                    const marker = document.createElement("div");
+                    marker.className = "note-marker open-note";
+                    
+                    const midiNote = baseNotes[s];
+                    const notePC = midiNote % 12;
+                    marker.textContent = getFormattedNoteName(notePC);
+                    statusCell.appendChild(marker);
+                } else if (fret > 0) {
+                    const cell = colEl.querySelector(`.fret-cell-vertical[data-fret="${fret}"]`);
+                    if (cell) {
+                        const marker = document.createElement("div");
+                        marker.className = "note-marker";
+                        
+                        const midiNote = baseNotes[s] + fret;
+                        const notePC = midiNote % 12;
+                        marker.textContent = getFormattedNoteName(notePC);
+                        cell.appendChild(marker);
+                    }
+                }
+            }
+        }
+
+        // Export Chord configuration to Guitar Studio App
+        async function exportChordToGuitarStudio(chordName) {
+            const keyRoot = chordName.match(/^[A-G](?:#|b)?/)?.[0] || "C";
+            const track = {
+                n: "Web: " + chordName,
+                k: keyRoot,
+                cs: [
+                    {
+                        c: chordName,
+                        b: 4
+                    }
+                ]
+            };
+
+            try {
+                const jsonStr = JSON.stringify(track);
+                
+                // Compress JSON using browser-native Zlib Deflate
+                const blob = new Blob([jsonStr], { type: 'application/json' });
+                const compressedStream = blob.stream().pipeThrough(new CompressionStream('deflate'));
+                const response = new Response(compressedStream);
+                const arrayBuffer = await response.arrayBuffer();
+                const bytes = new Uint8Array(arrayBuffer);
+                
+                // Base64 URL-safe conversion
+                let binaryStr = "";
+                for (let i = 0; i < bytes.length; i++) {
+                    binaryStr += String.fromCharCode(bytes[i]);
+                }
+                const base64 = btoa(binaryStr)
+                    .replace(/\+/g, '-')
+                    .replace(/\//g, '_')
+                    .replace(/=+$/, '');
+
+                // Fire the Android Intent URL for App Link
+                const intentUrl = `intent://share?mix=${base64}#Intent;scheme=guitarstudio;package=g9.smt.guitarStudio;end`;
+                window.location.href = intentUrl;
+            } catch (e) {
+                console.error("Export failed:", e);
+                window.location.href = "https://play.google.com/store/apps/details?id=g9.smt.guitarStudio";
+            }
+        }
+
+        // Setup Event Listeners
+        document.addEventListener("DOMContentLoaded", () => {
+            buildFretboard();
+
+            // Tuning selection changed
+            document.getElementById("tuning-select").addEventListener("change", (e) => {
+                currentTuning = e.target.value;
+                buildFretboard();
+                updateResults();
+            });
+
+            // Clear Fretboard button
+            document.getElementById("clear-btn").addEventListener("click", () => {
+                fretboardState = [-1, -1, -1, -1, -1, -1];
+                
+                const statusCells = document.querySelectorAll(".string-status-cell-vertical");
+                statusCells.forEach((cell, idx) => {
+                    const s = 5 - idx;
+                    updateStatusCellLabel(cell, s);
+                });
+
+                renderNoteMarkers();
+                updateResults();
+            });
+
+            // Play/Strum Chord button
+            document.getElementById("play-chord-btn").addEventListener("click", () => {
+                strumChord();
+            });
+        });
+    </script>
+
+    <!-- Smart App Promotion Banner -->
+    <div id="app-promo-banner" class="app-promo-banner">
+        <div class="app-promo-content">
+            <span class="app-promo-icon">🎸</span>
+            <div class="app-promo-text">
+                <h4>Guitar Studio for Android</h4>
+                <p>Interactive fretboard visualizer, drum radar & backing tracks.</p>
+            </div>
+        </div>
+        <div class="app-promo-actions">
+            <a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" class="app-promo-btn">GET APP</a>
+            <button class="app-promo-close" onclick="dismissBanner()">&times;</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isAndroid = /Android/i.test(navigator.userAgent);
+            const isDismissed = localStorage.getItem('dismissGuitarStudioPromo');
+            
+            if (isAndroid && !isDismissed) {
+                // Smooth entry delay
+                setTimeout(() => {
+                    document.getElementById('app-promo-banner').classList.add('visible');
+                }, 1000);
+            }
+        });
+
+        function dismissBanner() {
+            document.getElementById('app-promo-banner').classList.remove('visible');
+            localStorage.setItem('dismissGuitarStudioPromo', 'true');
+        }
+    </script>
+</body>
+
+</html>

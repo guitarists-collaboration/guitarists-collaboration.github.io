@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "g9.smt.guitarStudio",
+      "sha256_cert_fingerprints": [
+        "E8:44:EC:29:37:05:46:E7:3C:CE:7C:10:97:E7:EA:4C:F4:6A:96:89:B2:21:2F:DC:62:41:22:C1:B4:C4:C3:97",
+        "29:F7:DB:7E:55:95:2D:5A:0E:18:47:42:59:93:1A:47:EF:0A:5C:F9:87:59:82:2A:8F:83:0E:42:48:80:D9:F5"
+      ]
+    }
+  }
+]

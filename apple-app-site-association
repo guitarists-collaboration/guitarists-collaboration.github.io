@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "GMLN279NL5.com.g9.guitarsolo",
+        "paths": [
+          "/guitarsolo",
+          "/guitarsolo/*"
+        ]
+      }
+    ]
+  }
+}
