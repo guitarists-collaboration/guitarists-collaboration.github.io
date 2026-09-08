@@ -59,14 +59,21 @@ h3,
     display: inline-flex;
     align-items: baseline;
     text-decoration: none;
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #eceff2;
+    letter-spacing: -0.02em;
+}
+
+.logo span {
+    color: #00f5d4;
 }
 
 .logo-nav {
-    display: flex;
-    /* Maintain flex for navbar alignment */
-    font-size: 2rem;
+    display: inline-flex;
+    align-items: baseline;
+    font-size: 1.25rem;
 }
 
 .logo-inline {
@@ -75,18 +82,12 @@ h3,
 }
 
 .logo-main {
-    color: #60a5fa;
-    /* Light Blue */
-    letter-spacing: -0.5px;
+    color: #eceff2;
+    letter-spacing: -0.02em;
 }
 
 .logo-suffix {
-    color: #1e40af;
-    /* Dark Blue */
-    font-size: 0.65em;
-    position: relative;
-    top: -0.4em;
-    margin-left: 1px;
+    color: #00f5d4;
 }
 
 .nav-links {

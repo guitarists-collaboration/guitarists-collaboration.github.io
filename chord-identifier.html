@@ -10,9 +10,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;900&family=Playfair+Display:wght@700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --fret-board-wood: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
@@ -570,6 +568,21 @@
             padding-bottom: 4px;
         }
 
+        .logo {
+            font-family: 'Outfit', sans-serif !important;
+            font-size: 1.25rem !important;
+            font-weight: 800 !important;
+            text-decoration: none !important;
+            color: #eceff2 !important;
+            letter-spacing: -0.02em !important;
+            display: inline-flex !important;
+            align-items: baseline !important;
+        }
+
+        .logo span {
+            color: #00f5d4 !important;
+        }
+
         /* App Export Button styles */
         .app-export-btn {
             margin-top: 20px;
@@ -605,8 +618,8 @@
 <body>
     <nav class="navbar">
         <div class="container">
-            <a href="index.html" class="logo logo-nav">
-                <span class="logo-main" style="color:#eceff2;font-family:Outfit,sans-serif;font-weight:800;">Guitarists</span> <span class="logo-suffix" style="color:#00f5d4;font-family:Outfit,sans-serif;font-weight:800;">Collaboration</span>
+            <a href="index.html" class="logo">
+                Guitarists<span>Collaboration</span>
             </a>
             <ul class="nav-links">
                 <li><a href="index.html">Guitar Studio</a></li>
@@ -709,10 +722,10 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a href="index.html" class="logo logo-nav">
-                        <span class="logo-main" style="color:#eceff2;font-family:Outfit,sans-serif;font-weight:800;">Guitarists</span> <span class="logo-suffix" style="color:#00f5d4;font-family:Outfit,sans-serif;font-weight:800;">Collaboration</span>
+                    <a href="index.html" class="logo">
+                        Guitarists<span>Collaboration</span>
                     </a>
-                    <p>Elevating the guitar experience through innovation and technology.</p>
+                    <p>An open reference hub and tool repository for guitarists.</p>
                 </div>
                 <div class="footer-links">
                     <h4>Links</h4>
@@ -724,7 +737,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 G9: guitar apps. All rights reserved.</p>
+                <p>&copy; 2026 Guitarists Collaboration. All rights reserved.</p>
             </div>
         </div>
     </footer>
