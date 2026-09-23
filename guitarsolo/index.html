@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Solo | Backing Track & Exercise Studio</title>
+    <meta name="description" content="Open and play shared custom guitar backing tracks, scale exercises, and chord progressions in Guitar Solo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0b0d12;
+            --card-bg: rgba(22, 26, 36, 0.75);
+            --border-color: rgba(255, 140, 0, 0.25);
+            --primary-orange: #ff8c00;
+            --primary-orange-hover: #ff9f1c;
+            --text-main: #f3f4f6;
+            --text-sub: #9ca3af;
+            --accent-glow: rgba(255, 140, 0, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(255, 140, 0, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 100, 0, 0.06) 0%, transparent 40%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 36px 28px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px var(--accent-glow);
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 140, 0, 0.12);
+            border: 1px solid rgba(255, 140, 0, 0.3);
+            padding: 8px 18px;
+            border-radius: 30px;
+            margin-bottom: 24px;
+        }
+
+        .logo-icon {
+            font-size: 1.4rem;
+        }
+
+        .logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--primary-orange);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.25;
+        }
+
+        p.subtitle {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 28px;
+        }
+
+        .status-box {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 28px;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .status-box.active {
+            border-color: var(--primary-orange);
+            color: var(--text-main);
+            background: rgba(255, 140, 0, 0.08);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff8c00 0%, #e65100 100%);
+            color: #ffffff;
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 140, 0, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.07);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .footer-note {
+            margin-top: 28px;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+        }
+
+        .footer-note a {
+            color: var(--primary-orange);
+            text-decoration: none;
+        }
+
+        .footer-note a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        const APP_PACKAGE_ANDROID = "guitar.solo";
+        const SCHEME_IOS = "guitarsolo";
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const mix = urlParams.get('mix');
+            const statusEl = document.getElementById('status-message');
+            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            const isAndroid = /Android/i.test(navigator.userAgent);
+
+            if (mix) {
+                if (statusEl) {
+                    statusEl.classList.add('active');
+                    statusEl.innerHTML = "🎸 <strong>Custom Backing Track Received!</strong><br>Opening Guitar Solo...";
+                }
+
+                if (isAndroid) {
+                    const intentUrl = 'intent://share?mix=' + encodeURIComponent(mix) + '#Intent;scheme=guitarsolo;package=' + APP_PACKAGE_ANDROID + ';end';
+                    window.location.href = intentUrl;
+                } else if (isIOS) {
+                    const iosUrl = SCHEME_IOS + '://share?mix=' + encodeURIComponent(mix);
+                    window.location.href = iosUrl;
+                } else {
+                    const iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    iframe.src = SCHEME_IOS + '://share?mix=' + encodeURIComponent(mix);
+                    document.body.appendChild(iframe);
+                }
+            } else {
+                if (statusEl) {
+                    statusEl.innerHTML = "Welcome to Guitar Solo. Open shared track links or get the app for your device.";
+                }
+            }
+        });
+
+        function launchApp() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const mix = urlParams.get('mix') || '';
+            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+            if (isIOS) {
+                window.location.href = SCHEME_IOS + '://share?mix=' + encodeURIComponent(mix);
+            } else {
+                window.location.href = 'intent://share?mix=' + encodeURIComponent(mix) + '#Intent;scheme=guitarsolo;package=' + APP_PACKAGE_ANDROID + ';end';
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo-badge">
+            <span class="logo-icon">🎸</span>
+            <div class="logo-text">Guitar <span>Solo</span></div>
+        </div>
+
+        <h1>Shared Backing Track</h1>
+        <p class="subtitle">CAGED & 3nps Soloing, Scale Exercises & Custom Progressions</p>
+
+        <div id="status-message" class="status-box">
+            Preparing your backing track...
+        </div>
+
+        <div class="btn-group">
+            <button onclick="launchApp()" class="btn btn-primary">
+                <span>▶ Open in Guitar Solo App</span>
+            </button>
+            <a href="https://apps.apple.com/app/id6801060836" class="btn btn-secondary">
+                <span>🍎 Download on Apple App Store</span>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=guitar.solo" class="btn btn-secondary">
+                <span>🤖 Get on Google Play (Android)</span>
+            </a>
+        </div>
+
+        <div class="footer-note">
+            Powered by <a href="../index.html">Guitarists Collaboration</a> &copy; 2026
+        </div>
+    </div>
+</body>
+
+</html>

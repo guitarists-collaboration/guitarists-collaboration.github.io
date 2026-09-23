@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Guitarly</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f8f9fa; }
+        .btn { display: inline-block; padding: 15px 30px; font-size: 18px; color: white; background-color: #01875f; text-decoration: none; border-radius: 8px; margin-top: 20px; font-weight: bold; }
+    </style>
+    <script>
+        const APP_PACKAGE_NAME = "g9.guitarly";
+        
+        window.onload = function() {
+            window.location.href = "market://details?id=" + APP_PACKAGE_NAME;
+            setTimeout(function() {
+                window.location.href = "https://play.google.com/store/apps/details?id=" + APP_PACKAGE_NAME;
+            }, 2000);
+        };
+    </script>
+</head>
+<body>
+    <h2>You've been invited to use Guitarly!</h2>
+    <p>Opening Google Play Store...</p>
+    <a href="https://play.google.com/store/apps/details?id=g9.guitarly" class="btn">Get it on Google Play</a>
+</body>
+</html>
