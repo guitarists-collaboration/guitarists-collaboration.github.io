@@ -744,6 +744,43 @@
 
     <!-- JS Fretboard and Chord Detection Engine -->
     <script>
+        // Target App Configuration for exporting chords and branding
+        const TARGET_APPS = {
+            guitarly: {
+                name: "Guitarly",
+                scheme: "guitarly",
+                pkg: "g9.guitarly",
+                storeUrl: "https://play.google.com/store/apps/details?id=g9.guitarly",
+                subtitle: "Interactive fretboard, AI song assistant & backing tracks."
+            },
+            guitarsoloist: {
+                name: "Guitar Soloist",
+                scheme: "guitarsoloist",
+                pkg: "g9.smt.guitarSoloist",
+                storeUrl: "https://play.google.com/store/apps/details?id=g9.smt.guitarSoloist",
+                subtitle: "Master soloing, scales, and modal improvisation."
+            },
+            guitarsolo: {
+                name: "Guitar Solo",
+                scheme: "guitarsolo",
+                pkg: "guitar.solo",
+                storeUrl: "https://play.google.com/store/apps/details?id=guitar.solo",
+                subtitle: "Interactive backing tracks and solo practice."
+            },
+            guitarstudio: {
+                name: "Guitar Studio",
+                scheme: "guitarstudio",
+                pkg: "g9.smt.guitarStudio",
+                storeUrl: "https://play.google.com/store/apps/details?id=g9.smt.guitarStudio",
+                subtitle: "Interactive fretboard visualizer, drum radar & backing tracks."
+            }
+        };
+
+        // Determine active app from URL query param (e.g. ?app=guitarly)
+        const urlParams = new URLSearchParams(window.location.search);
+        const appParam = (urlParams.get("app") || "").toLowerCase().trim();
+        const activeAppConfig = TARGET_APPS[appParam] || TARGET_APPS.guitarstudio;
+
         // Note naming configuration
         const NOTES_SHARP = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
         const NOTES_FLAT = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
@@ -1086,8 +1123,8 @@
                         <strong>Root:</strong> ${rootName} | 
                         <strong>Spelling:</strong> ${match.formula.intervals.map(s => getFormattedNoteName((match.root + s) % 12, match.root)).join(' - ')}
                     </div>
-                    <button class="app-export-btn" onclick="exportChordToGuitarStudio('${fullName}')">
-                        <span>🎸 Practice in Guitar Studio</span>
+                    <button class="app-export-btn" onclick="exportChordToApp('${fullName}')">
+                        <span>🎸 Practice in ${activeAppConfig.name}</span>
                     </button>
                 </div>
             `;
@@ -1370,8 +1407,8 @@
             }
         }
 
-        // Export Chord configuration to Guitar Studio App
-        async function exportChordToGuitarStudio(chordName) {
+        // Export Chord configuration to Target App (Guitarly, Guitar Soloist, Guitar Solo, Guitar Studio)
+        async function exportChordToApp(chordName) {
             const keyRoot = chordName.match(/^[A-G](?:#|b)?/)?.[0] || "C";
             const track = {
                 n: "Web: " + chordName,
@@ -1404,12 +1441,12 @@
                     .replace(/\//g, '_')
                     .replace(/=+$/, '');
 
-                // Fire the Android Intent URL for App Link
-                const intentUrl = `intent://share?mix=${base64}#Intent;scheme=guitarstudio;package=g9.smt.guitarStudio;end`;
+                // Fire the Android Intent URL for App Link with dynamic scheme and package
+                const intentUrl = `intent://share?mix=${base64}#Intent;scheme=${activeAppConfig.scheme};package=${activeAppConfig.pkg};end`;
                 window.location.href = intentUrl;
             } catch (e) {
                 console.error("Export failed:", e);
-                window.location.href = "https://play.google.com/store/apps/details?id=g9.smt.guitarStudio";
+                window.location.href = activeAppConfig.storeUrl;
             }
         }
 
@@ -1450,20 +1487,31 @@
         <div class="app-promo-content">
             <span class="app-promo-icon">🎸</span>
             <div class="app-promo-text">
-                <h4>Guitar Studio for Android</h4>
-                <p>Interactive fretboard visualizer, drum radar & backing tracks.</p>
+                <h4 id="app-promo-title">Guitar Studio for Android</h4>
+                <p id="app-promo-subtitle">Interactive fretboard visualizer, drum radar & backing tracks.</p>
             </div>
         </div>
         <div class="app-promo-actions">
-            <a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" class="app-promo-btn">GET APP</a>
+            <a id="app-promo-link" href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" class="app-promo-btn">GET APP</a>
             <button class="app-promo-close" onclick="dismissBanner()">&times;</button>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Update banner branding dynamically
+            const promoTitle = document.getElementById('app-promo-title');
+            const promoSubtitle = document.getElementById('app-promo-subtitle');
+            const promoLink = document.getElementById('app-promo-link');
+            if (promoTitle && activeAppConfig) {
+                promoTitle.textContent = `${activeAppConfig.name} for Android`;
+                promoSubtitle.textContent = activeAppConfig.subtitle;
+                promoLink.href = activeAppConfig.storeUrl;
+            }
+
             const isAndroid = /Android/i.test(navigator.userAgent);
-            const isDismissed = localStorage.getItem('dismissGuitarStudioPromo');
+            const dismissKey = `dismiss_${activeAppConfig.scheme}_promo`;
+            const isDismissed = localStorage.getItem(dismissKey);
             
             if (isAndroid && !isDismissed) {
                 // Smooth entry delay
@@ -1475,7 +1523,8 @@
 
         function dismissBanner() {
             document.getElementById('app-promo-banner').classList.remove('visible');
-            localStorage.setItem('dismissGuitarStudioPromo', 'true');
+            const dismissKey = `dismiss_${activeAppConfig.scheme}_promo`;
+            localStorage.setItem(dismissKey, 'true');
         }
     </script>
 </body>
