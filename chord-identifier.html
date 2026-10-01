@@ -765,14 +765,16 @@
                 scheme: "guitarsolo",
                 pkg: "guitar.solo",
                 storeUrl: "https://play.google.com/store/apps/details?id=guitar.solo",
-                subtitle: "Interactive backing tracks and solo practice."
+                appStoreUrl: "https://apps.apple.com/app/id6801060836",
+                subtitle: "Interactive backing tracks and scale soloing practice."
             },
             guitarstudio: {
                 name: "Guitar Studio",
                 scheme: "guitarstudio",
                 pkg: "g9.smt.guitarStudio",
                 storeUrl: "https://play.google.com/store/apps/details?id=g9.smt.guitarStudio",
-                subtitle: "Interactive fretboard visualizer, drum radar & backing tracks."
+                appStoreUrl: "https://apps.apple.com/app/id6811331524",
+                subtitle: "Interactive fretboard visualizer, built-in tuner & backing tracks."
             }
         };
 
@@ -1503,17 +1505,20 @@
             const promoTitle = document.getElementById('app-promo-title');
             const promoSubtitle = document.getElementById('app-promo-subtitle');
             const promoLink = document.getElementById('app-promo-link');
+            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            const isAndroid = /Android/i.test(navigator.userAgent);
+
             if (promoTitle && activeAppConfig) {
-                promoTitle.textContent = `${activeAppConfig.name} for Android`;
+                const platformLabel = isIOS ? "for iOS" : isAndroid ? "for Android" : "";
+                promoTitle.textContent = `${activeAppConfig.name} ${platformLabel}`.trim();
                 promoSubtitle.textContent = activeAppConfig.subtitle;
-                promoLink.href = activeAppConfig.storeUrl;
+                promoLink.href = isIOS ? (activeAppConfig.appStoreUrl || activeAppConfig.storeUrl) : activeAppConfig.storeUrl;
             }
 
-            const isAndroid = /Android/i.test(navigator.userAgent);
             const dismissKey = `dismiss_${activeAppConfig.scheme}_promo`;
             const isDismissed = localStorage.getItem(dismissKey);
             
-            if (isAndroid && !isDismissed) {
+            if ((isAndroid || isIOS) && !isDismissed) {
                 // Smooth entry delay
                 setTimeout(() => {
                     document.getElementById('app-promo-banner').classList.add('visible');

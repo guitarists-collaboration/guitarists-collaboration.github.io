@@ -594,6 +594,124 @@
             background: rgba(0, 245, 212, 0.05);
         }
 
+        .app-badge.tuner-badge {
+            color: var(--teal);
+            background: rgba(0, 245, 212, 0.1);
+            border-color: rgba(0, 245, 212, 0.25);
+        }
+
+        .app-badge.solo-badge {
+            color: #ff9f1c;
+            background: rgba(255, 159, 28, 0.12);
+            border-color: rgba(255, 159, 28, 0.25);
+        }
+
+        .showcase-app-download {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 12px 14px;
+        }
+
+        .showcase-app-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .app-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .app-dot.teal {
+            background: var(--teal);
+            box-shadow: 0 0 8px rgba(0, 245, 212, 0.8);
+        }
+
+        .app-dot.orange {
+            background: #ff9f1c;
+            box-shadow: 0 0 8px rgba(255, 159, 28, 0.8);
+        }
+
+        .pill-mini {
+            font-size: 0.7rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            background: rgba(0, 245, 212, 0.12);
+            color: var(--teal);
+            border: 1px solid rgba(0, 245, 212, 0.25);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .pill-mini.orange {
+            background: rgba(255, 159, 28, 0.12);
+            color: #ff9f1c;
+            border-color: rgba(255, 159, 28, 0.3);
+        }
+
+        .comparison-section {
+            margin-bottom: 80px;
+        }
+
+        .comparison-table-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--surface);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table th {
+            background: var(--surface-card);
+            color: var(--text-primary);
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .check-yes {
+            color: var(--teal);
+            font-weight: 700;
+        }
+
+        .check-no {
+            color: var(--text-muted);
+        }
+
+        .card-subheading {
+            font-size: 0.8rem;
+            color: var(--teal);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 14px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
         /* Footer */
         footer {
             border-top: 1px solid var(--border);
@@ -740,24 +858,58 @@
 
                         <!-- Download Actions -->
                         <div class="download-actions">
-                            <div class="store-buttons-grid">
-                                <!-- Google Play Store (Guitar Studio) -->
-                                <a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" class="store-btn android-btn" target="_blank" rel="noopener">
-                                    <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.082 12 8.082c-1.8533 0-3.5902.329-5.1368.8677L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
-                                    <div class="store-text">
-                                        <span class="store-sub">Get Guitar Studio on</span>
-                                        <span class="store-main">Google Play</span>
-                                    </div>
-                                </a>
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px;">
+                                Download Featured Practice Companions
+                            </div>
 
-                                <!-- Apple App Store (Guitar Solo) -->
-                                <a href="https://apps.apple.com/us/app/guitar-solo-backing-tracks/id6801060836" class="store-btn ios-btn" target="_blank" rel="noopener">
-                                    <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-1.06 1.72-.93 2.74 1.01.08 2.02-.49 2.64-1.24z"/></svg>
-                                    <div class="store-text">
-                                        <span class="store-sub">Get Guitar Solo on</span>
-                                        <span class="store-main">App Store</span>
-                                    </div>
-                                </a>
+                            <!-- Guitar Studio Download Box -->
+                            <div class="showcase-app-download">
+                                <div class="showcase-app-label">
+                                    <span class="app-dot teal"></span>
+                                    <strong>Guitar Studio</strong>
+                                    <span class="pill-mini">Built-in Tuner</span>
+                                </div>
+                                <div class="store-buttons-grid">
+                                    <a href="https://apps.apple.com/app/id6811331524" class="store-btn ios-btn" target="_blank" rel="noopener">
+                                        <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-1.06 1.72-.93 2.74 1.01.08 2.02-.49 2.64-1.24z"/></svg>
+                                        <div class="store-text">
+                                            <span class="store-sub">Download on</span>
+                                            <span class="store-main">App Store</span>
+                                        </div>
+                                    </a>
+                                    <a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" class="store-btn android-btn" target="_blank" rel="noopener">
+                                        <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.082 12 8.082c-1.8533 0-3.5902.329-5.1368.8677L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+                                        <div class="store-text">
+                                            <span class="store-sub">Get it on</span>
+                                            <span class="store-main">Google Play</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Guitar Solo Download Box -->
+                            <div class="showcase-app-download" style="margin-top: 10px;">
+                                <div class="showcase-app-label">
+                                    <span class="app-dot orange"></span>
+                                    <strong>Guitar Solo</strong>
+                                    <span class="pill-mini orange">Scale Exercises</span>
+                                </div>
+                                <div class="store-buttons-grid">
+                                    <a href="https://apps.apple.com/app/id6801060836" class="store-btn ios-btn" target="_blank" rel="noopener">
+                                        <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-1.06 1.72-.93 2.74 1.01.08 2.02-.49 2.64-1.24z"/></svg>
+                                        <div class="store-text">
+                                            <span class="store-sub">Download on</span>
+                                            <span class="store-main">App Store</span>
+                                        </div>
+                                    </a>
+                                    <a href="https://play.google.com/store/apps/details?id=guitar.solo" class="store-btn android-btn" target="_blank" rel="noopener">
+                                        <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.082 12 8.082c-1.8533 0-3.5902.329-5.1368.8677L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+                                        <div class="store-text">
+                                            <span class="store-sub">Get it on</span>
+                                            <span class="store-main">Google Play</span>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -769,57 +921,166 @@
         <section class="catalog-section">
             <div class="section-heading">
                 <h2>Explore the Apps</h2>
-                <p>Designed for zero friction: no mandatory accounts, no telemetry tracking, and complete offline capability.</p>
+                <p>Designed for zero friction: no mandatory accounts, no telemetry tracking, 100% free core features, and complete offline capability.</p>
             </div>
 
             <div class="apps-grid">
                 <!-- Guitar Studio -->
                 <div class="app-card">
                     <div class="app-card-top">
-                        <span class="app-badge mono">Flagship DAW & Practice</span>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <span class="app-badge tuner-badge mono">🎯 Built-in Tuner</span>
+                            <span class="app-badge mono">Interactive Practice & Backing</span>
+                        </div>
                         <h3>Guitar Studio</h3>
-                        <p>
-                            A full-featured multi-track practice and sequencing workstation. Build custom chord progressions with dual rhythm layers, real-time reverb and chorus, and an industrial drum radar scope.
+                        <p style="font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">
+                            Your Interactive Guitar Practice & Backing Track Partner
                         </p>
+                        <p>
+                            Transform the way you practice, write, and master the guitar! Guitar Studio places an animated backing band, visual chord library, and scale trainer directly in your pocket. Tired of boring metronomes? Play along with high-fidelity, customizable tracks that adapt to your style and skill level.
+                        </p>
+                        <p style="font-size: 0.88rem; color: var(--teal); font-weight: 600;">
+                            🆓 100% Free Core Features: Create tracks, tune your guitar, study scales, and practice chord progressions completely free of charge. No credit card, no sign-ups, and no trial expirations.
+                        </p>
+
+                        <span class="card-subheading">Key Features You'll Love</span>
                         <ul class="app-feature-list">
-                            <li>24-fret illuminated scale & interval overlays</li>
-                            <li>FluidSynth SoundFont engine with low latency</li>
-                            <li>Dual rhythm pattern layering per measure</li>
-                            <li>Industrial 16-tap drum radar visualizer</li>
-                            <li>1-tap URL and QR code track sharing</li>
-                            <li>Zero tracking & private local storage</li>
+                            <li><strong>🎯 Precision Chromatic Tuner:</strong> Fast, responsive microphone-based tuner right from the navigation menu so you're ready to jam in seconds.</li>
+                            <li><strong>🥁 Build Your Virtual Band:</strong> Combine drums, bass lines, and rhythmic guitar guides. Adjust tempo and visualize beats dynamically.</li>
+                            <li><strong>🎛️ Dual-Rhythm Panning & Mixer:</strong> Layer two independent rhythm tracks with automatic stereo panning, animated VU meters, reverb & chorus.</li>
+                            <li><strong>🎸 Interactive Fretboard Visualizer:</strong> Display chord shapes and scale fingerings (notes, intervals, or fingers) with unified note-highlighting.</li>
+                            <li><strong>🧠 AI-Powered Quick Import:</strong> Paste bar-delimited chord sequences (<code>Am | D7 | G | C</code>) from tabs or AI assistants to generate tracks instantly.</li>
+                            <li><strong>🤝 Share & Collaborate:</strong> Export progressions, scale guides, and tracks to students or bandmates using quick web links or QR codes.</li>
+                            <li><strong>🚀 Pro Upgrade (One-Time, No Subscriptions):</strong> Track embedding (intro/verse/chorus/bridge), focused sub-looping, drum radar display, up to 12 saved tracks.</li>
+                            <li><em>Note: Focuses on backing tracks, rhythm mixing, and tuning (does not offer scale exercises).</em></li>
                         </ul>
                     </div>
-                    <a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" class="btn-card" target="_blank" rel="noopener">
-                        Get Guitar Studio on Google Play &rarr;
-                    </a>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px;">
+                        <a href="https://apps.apple.com/app/id6811331524" class="btn-card" target="_blank" rel="noopener">
+                            <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-1.06 1.72-.93 2.74 1.01.08 2.02-.49 2.64-1.24z"/></svg>
+                            Apple App Store &rarr;
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" class="btn-card" target="_blank" rel="noopener">
+                            <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.082 12 8.082c-1.8533 0-3.5902.329-5.1368.8677L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+                            Google Play &rarr;
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Guitar Solo -->
                 <div class="app-card">
                     <div class="app-card-top">
-                        <span class="app-badge mono">Lead Soloing Trainer</span>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <span class="app-badge solo-badge mono">🎼 Scale Exercises</span>
+                            <span class="app-badge mono">Lead Soloing Trainer</span>
+                        </div>
                         <h3>Guitar Solo</h3>
-                        <p>
-                            Focused lead guitar trainer for mastering scales, modes, and arpeggios over dynamic rhythm tracks. Perfect for learning fretboard geometry, CAGED positions, and speed building.
+                        <p style="font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">
+                            Lead Soloing Trainer, CAGED & 3NPS Frameworks
                         </p>
+                        <p>
+                            Focused lead guitar trainer for mastering scales, modes, and arpeggios over dynamic rhythm tracks. Perfect for learning fretboard geometry, CAGED positions, speed building, and modal improvisation.
+                        </p>
+                        <p style="font-size: 0.88rem; color: #ff9f1c; font-weight: 600;">
+                            🆓 100% Free Core Features: Practice scales, loop custom progressions, and master interval degrees completely free. No sign-ups, no tracking, full offline capability.
+                        </p>
+
+                        <span class="card-subheading">Key Features You'll Love</span>
                         <ul class="app-feature-list">
-                            <li>Real-time interval degree tracking</li>
-                            <li>Pentatonic, 3NPS, and modal box highlighting</li>
-                            <li>Interactive chord progression looper</li>
-                            <li>High-contrast daylight & dark OLED themes</li>
-                            <li>Available on both iOS and Android</li>
+                            <li><strong>🎼 Interactive Scale Exercises:</strong> Structured scale exercises, modal drills, and interval tests to develop fretboard dexterity and speed.</li>
+                            <li><strong>📐 CAGED & 3NPS Frameworks:</strong> Visualize pentatonic boxes, 7 diatonic modes, and 3-note-per-string patterns connected seamlessly across 24 frets.</li>
+                            <li><strong>⚡ Real-Time Interval Tracking:</strong> Root notes, 3rds, 5ths, and tensions light up dynamically in sync with active chord sequences.</li>
+                            <li><strong>🔁 Chord Progression Looper:</strong> Custom backing tracks, adjustable tempo, and targeted transition looping.</li>
+                            <li><strong>🔊 FluidSynth Audio Engine:</strong> Low-latency audio rendering with multi-sampled acoustic/electric guitars, bass lines, and acoustic drum grooves.</li>
+                            <li><strong>☀️🌙 Daylight & Dark OLED Themes:</strong> High-contrast color palettes designed for crystal-clear readability both outdoors and on stage.</li>
+                            <li><em>Note: Focuses on scale exercises and lead soloing (does not include the built-in guitar tuner).</em></li>
                         </ul>
                     </div>
-                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                        <a href="https://apps.apple.com/us/app/guitar-solo-backing-tracks/id6801060836" class="btn-card" target="_blank" rel="noopener">
-                            iOS App Store &rarr;
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px;">
+                        <a href="https://apps.apple.com/app/id6801060836" class="btn-card" target="_blank" rel="noopener">
+                            <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-1.06 1.72-.93 2.74 1.01.08 2.02-.49 2.64-1.24z"/></svg>
+                            Apple App Store &rarr;
                         </a>
                         <a href="https://play.google.com/store/apps/details?id=guitar.solo" class="btn-card" target="_blank" rel="noopener">
+                            <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.082 12 8.082c-1.8533 0-3.5902.329-5.1368.8677L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
                             Google Play &rarr;
                         </a>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Direct Side-by-Side Comparison Section -->
+        <section class="comparison-section">
+            <div class="section-heading">
+                <h2>Comparison: Guitar Studio vs Guitar Solo</h2>
+                <p>
+                    The two apps share the same core DNA: multi-track virtual backing bands, interactive fretboards, FluidSynth SoundFont synthesis, and private local storage. Here is how they compare:
+                </p>
+            </div>
+
+            <div class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Capability / Feature</th>
+                            <th>🎸 Guitar Studio</th>
+                            <th>🎸 Guitar Solo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Primary Focus</strong></td>
+                            <td>Practice, Backing Band & Built-in Tuner</td>
+                            <td>Lead Soloing, Scales & Interval Drills</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🎯 Precision Chromatic Tuner</strong></td>
+                            <td><span class="check-yes">✓ Built-in (Mic-based)</span></td>
+                            <td><span class="check-no">✕ Not included</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>🎼 Interactive Scale Exercises</strong></td>
+                            <td><span class="check-no">✕ Not included (Visual reference only)</span></td>
+                            <td><span class="check-yes">✓ Dedicated Exercises & Drills</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>🥁 Virtual Backing Band (Drums/Bass/Guitar)</strong></td>
+                            <td><span class="check-yes">✓ Yes</span></td>
+                            <td><span class="check-yes">✓ Yes</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>🎛️ Dual-Rhythm Panning & Mixer</strong></td>
+                            <td><span class="check-yes">✓ Yes (Reverb, Chorus & VU meters)</span></td>
+                            <td><span class="check-yes">✓ Yes (Mixer & SoundFont)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>🎸 24-Fret Fretboard Display</strong></td>
+                            <td><span class="check-yes">✓ Notes, Intervals & Fingers</span></td>
+                            <td><span class="check-yes">✓ CAGED, 3NPS & Intervals</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>🧠 AI Chord Progression Import</strong></td>
+                            <td><span class="check-yes">✓ Yes (Am | D7 | G | C)</span></td>
+                            <td><span class="check-yes">✓ Yes (Am | D7 | G | C)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>🤝 1-Tap Universal Link & QR Sharing</strong></td>
+                            <td><span class="check-yes">✓ Yes</span></td>
+                            <td><span class="check-yes">✓ Yes</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>🆓 100% Free Core Features (No Subscriptions)</strong></td>
+                            <td><span class="check-yes">✓ Yes</span></td>
+                            <td><span class="check-yes">✓ Yes</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>📱 Platform Availability</strong></td>
+                            <td><span class="check-yes">✓ iOS App Store & Google Play</span></td>
+                            <td><span class="check-yes">✓ iOS App Store & Google Play</span></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -834,6 +1095,10 @@
                 <li><a href="chord-identifier.html">Chord Finder</a></li>
                 <li><a href="recommended-apps.html">Recommended Apps</a></li>
                 <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="https://apps.apple.com/app/id6811331524" title="Guitar Studio on Apple App Store">Guitar Studio (iOS)</a></li>
+                <li><a href="https://play.google.com/store/apps/details?id=g9.smt.guitarStudio" title="Guitar Studio on Google Play">Guitar Studio (Android)</a></li>
+                <li><a href="https://apps.apple.com/app/id6801060836" title="Guitar Solo on Apple App Store">Guitar Solo (iOS)</a></li>
+                <li><a href="https://play.google.com/store/apps/details?id=guitar.solo" title="Guitar Solo on Google Play">Guitar Solo (Android)</a></li>
                 <li><a href="mailto:guitarly.app@gmail.com">Contact</a></li>
             </ul>
         </div>
